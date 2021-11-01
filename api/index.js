@@ -3,6 +3,30 @@ const fetch = require("isomorphic-fetch");
 const fs = require("fs");
 
 async function app() {
+  //get stock price
+  const urlRes = await fetch(
+    "https://www.moneycontrol.com/india/stockpricequote/financeinvestments/adityabirlacapital/ABC9"
+  );
+
+  const text = await urlRes.text();
+  const $ = cheerio.load(text);
+  const name = $("#stockName > h1").text();
+  const nsePrice = $("#nsespotval").attr("value");
+  const nseChange = $("#nsechange").text();
+  const bsePrice = $("#bsespotval").attr("value");
+  const bseChange = $(
+    "#inp_bse_display > div.inindi_price > div > div.indimprice > div.pricupdn.bsechange.red"
+  ).text();
+  console.log(name);
+  console.log("Nse Price: ");
+  console.log(nsePrice, nseChange);
+  console.log("Bse Price");
+  console.log(bsePrice, bseChange);
+
+  //await getAllFunds();
+}
+
+async function getAllFunds() {
   let allFunds = [];
   for (let i = 0; i < 26; i++) {
     let letter = String.fromCharCode(65 + i);
